@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <div class="row justify-content-center">
+    <div style="max-width: 50%;">
+      <img src="{{product.image_url}}" style="max-width: 100%;">
+      <ul>
+        <li>
+          {{product.name}} - {{currency.get('label')}}${{ "%.2f" | format(currency.get('rate') * product.price) }}
+        </li>
+        <li>
+          <p>Available: {{product.quantity}}</p>
+        </li>
+        <li>
+          <p>Description: {{product.description}}</p>
+        </li>
+        <li>
+          <p>Weight: {{product.weight}} grams</p>
+        </li>
+      </ul>
+
+      <div class="row"> 
+        <form method="POST", id="user_form">
+          {{ form.hidden_tag() }}
+
+          {% for field in form if field.widget.inout_type != 'hidden' %}
+            {% for error in field.error %}
+              <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+            {{ field(placeholder=field.label.text, class="form-control") }}
+          {% endfor %}
+            <button class="btn btn-primary btn-lg btn-block">Add to cart</button>
+        </form>
+      </div>
+        {% if  g.user.username in ADMIN_ID %}
+        <div style="padding-top: 5px;">
+          <a href="/products/{{ product.id }}/update" class="btn btn-outline-secondary btn-lg btn-block">Edit Product</a>
+        </div>
+        <div style="padding-top: 5px;">
+          <form method = "POST" action="/products/{{ product.id }}/delete">
+            <button id="submit" class="btn btn-danger btn-lg btn-block">Delete</button>
+          </form>
+        </div>
+        {% endif %}
+    </div>
+  </div>
+
+{% endblock %}

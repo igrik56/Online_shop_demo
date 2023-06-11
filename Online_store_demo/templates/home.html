@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="row">
+        {% for p in products %}
+          <div class="col-lg-4 col-md-3 col-12">
+            <div class="card user-card">
+              <div class="card-inner">
+                <div class="image-wrapper">
+                  <img src="{{ p.image_url }}" alt="" class="card-hero">
+                </div>
+                <div class="card-contents">
+                  <a href="/products/{{ p.id }}" class="card-link">
+                    <p>{{ p.name }}</p>
+                  </a>
+                  <p class="card-bio">Category: {{p.category}}</p>
+                  <p class="card-bio">Price: {{currency.get('label')}}${{ "%.2f" | format(p.displayed_price(currency.get('rate'))) }}</p> 
+                </div>
+               </div>
+            </div>
+          </div>
+        {% endfor %}
+  </div>
+{% endblock %}

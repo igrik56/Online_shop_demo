@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if products | length != 0 %}
+  <div class="row">
+      {% for p in products %}
+        <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+          <div class="card user-card">
+            <div class="card-inner">
+              <div class="image-wrapper">
+                <img src="{{ p[0].image_url }}" alt="" class="card-hero">
+              </div>
+              <div class="card-contents">
+                <!-- <ul> -->
+                  <a href="/products/{{ p[0].id }}" class="card-link">
+                    <p>{{ p.name }}</p>
+                  </a>
+                  <p class="card-bio">Qty: {{p[1]}}</p>
+                  <p class="card-bio">Price: {{currency.get('label')}}${{ "%.2f" | format(p[0].displayed_price(currency.get('rate'))*p[1]) }}</p> 
+                  <p class="card-bio">Category: {{p[0].category}}</p>
+                  <form action="/cart/delete/{{p[0].id}}">
+                    <button class="btn btn-warning btn-block">Delete from Cart</button>
+                  </form>
+                  <!-- </ul> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      
+      <div style="display: flex; padding-top: 1rem; padding-bottom: 1rem; justify-items: baseline; justify-content: center;">
+        <form method="POST", id="user_form">
+          {{ form.hidden_tag() }}
+          <button class="btn btn-success btn-lg btn-block">Purchase</button>
+        </form>
+      </div>
+      
+{% else %}
+<div style="display: flex; justify-content: center; justify-items: center;">
+  <h1>Your cart is empty</h1>
+</div>
+<div style="display: flex; justify-content: center; justify-items: center;">
+  <a href="/" class="btn btn-primary btn-lg btn-block">Home</a>
+</div>
+{% endif %}
+      
+{% endblock %}

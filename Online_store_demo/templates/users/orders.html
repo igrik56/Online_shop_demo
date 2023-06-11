@@ -1,0 +1,25 @@
+{% extends 'users/detail.html' %}
+
+{% block user_details %}
+  <div class="col-sm-9">
+    <div class="row">
+        <ul class="list-group" id="messages">
+          {% for order in orders %}
+            <li class="list-group-item">
+              <a href="/users/{{user.id}}/{{order.id}}" class="message-link">
+              <div class="message-area">
+                <a href="/users/{{user.id}}/orders">Order number {{order.id}}</a>
+                <span class="text-muted"> - placed on: {{ order.timestamp.strftime('%d %B %Y') }}</span>
+                {% for p in order.products%}
+                    <p>{{ p.name }}</p>
+                {% endfor %}
+                <p>{{ order.total }}</p>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
